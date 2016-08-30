@@ -2,7 +2,9 @@ package org.alfiler.pickandmix.spark.postprocessors
 
 import com.typesafe.config.Config
 import org.alfiler.pickandmix.PAMConfigElementConstructor
+import org.alfiler.pickandmix.sdk.FlowElement.Action
 import org.alfiler.pickandmix.spark.sdk.Actions.DataFrameTransformation
+import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.DataFrame
 
 object QueryConfig{
@@ -29,8 +31,8 @@ object Query extends PAMConfigElementConstructor[DataFrameTransformation] {
 }
 
 class Query(config: QueryConfig) extends DataFrameTransformation{
-  def action[RDD[String]] = {
+  override def action: Action[DataFrame, DataFrame, RDD[String]] = {
     dataframe:DataFrame =>
-      (dataframe.sqlContext.sql("hola"),None)
+      (dataframe.sqlContext.sql(config.query),None)
   }
 }

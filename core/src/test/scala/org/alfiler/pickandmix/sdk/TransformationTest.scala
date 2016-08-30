@@ -6,7 +6,7 @@ import scala.reflect.ClassTag
 import scala.util.Try
 
 class TransformationTest extends FlatSpec with Matchers{
-  class StringToInt extends Transformation[List[String],List[Int],List[String]] {
+  class StringToInt extends BasicTransformation[List[String],List[Int],List[String]] {
     override def action: Action[List[String], List[Int], List[String]] = {
       strings:List[String] => {
         val processed = strings.map(s => Try{s.toInt}.map(i => Right(i)).getOrElse(Left(s"""coudn't parse "$s" to integer""")))
@@ -16,7 +16,7 @@ class TransformationTest extends FlatSpec with Matchers{
     }
   }
 
-  class FiveDividedByElement extends Transformation[List[Int],List[Int],List[String]] {
+  class FiveDividedByElement extends BasicTransformation[List[Int],List[Int],List[String]] {
     override def action: Action[List[Int], List[Int], List[String]] = {
       ints:List[Int] => {
         val processed = ints.map(i => Try {
